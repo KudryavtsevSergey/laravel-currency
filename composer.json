@@ -1,0 +1,30 @@
+{
+    "name": "sun/currency",
+    "description": "Currency converter",
+    "authors": [
+        {
+            "name": "Kudryavtsev Sergey",
+            "email": "invaderman@mail.ru"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],
+        "psr-4": {
+            "Sun\\Currency\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sun\\Currency\\CurrencyServiceProvider"
+            ],
+            "aliases": {
+                "Currency": "Sun\\Currency\\Facade"
+            }
+        }
+    }
+}
