@@ -57,6 +57,6 @@ class Currency
         $course = $this->courses[$fromCurrencyId][$toCurrencyId];
 
         $amount = floatval($amount);
-        return number_format($amount * $course, $this->decimals);
+        return number_format($amount * $course, $this->decimals, '.', '');
     }
 }
