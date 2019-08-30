@@ -12,19 +12,4 @@ class Facade extends IlluminateFacade
     {
         return 'Currency';
     }
-
-    /**
-     * @param array $options
-     * @return void
-     */
-    public static function routes(array $options = [])
-    {
-        $defaultOptions = ['prefix' => 'courses', 'namespace' => '\Sun\Currency\Http\Controllers'];
-
-        $options = array_merge($defaultOptions, $options);
-
-        Route::group($options, function (Router $router) {
-            (new RouteRegistrar($router))->routes();
-        });
-    }
 }

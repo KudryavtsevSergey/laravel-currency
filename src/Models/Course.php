@@ -3,6 +3,7 @@
 namespace Sun\Currency\Models;
 
 use \Illuminate\Database\Eloquent\Model as Eloquent;
+use Sun\Currency\CurrencyConfig;
 
 /**
  * Class Course
@@ -15,9 +16,15 @@ use \Illuminate\Database\Eloquent\Model as Eloquent;
  */
 class Course extends Eloquent
 {
-    protected $table = 'course';
     public $incrementing = false;
     public $timestamps = false;
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->table = CurrencyConfig::tableCourse();
+    }
 
     protected $casts = [
         'from_currency_id' => 'int',

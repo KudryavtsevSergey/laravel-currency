@@ -11,9 +11,9 @@ use Sun\Currency\Models\Course;
 class Currency
 {
     /**
-     * @var array
+     * @var Collection
      */
-    protected $courses = [];
+    protected $courses;
 
     /**
      * @var int
@@ -22,13 +22,10 @@ class Currency
 
     public function __construct(Course $course)
     {
-        $courses = $course
-            ->select('course.from_currency_id', 'course.to_currency_id', 'course.coefficient')
-            ->get();
+        $tableCourse = CurrencyConfig::tableCourse();
 
-        foreach ($courses as $course) {
-            $this->courses[$course->from_currency_id][$course->to_currency_id] = $course->coefficient;
-        }
+        $this->courses = $course->select("{$tableCourse}.from_currency_id", "{$tableCourse}.to_currency_id", "{$tableCourse}.coefficient")
+            ->get();
     }
 
     public function decimals(int $decimals)
@@ -46,17 +43,16 @@ class Currency
      */
     public function convert(int $fromCurrencyId, int $toCurrencyId, $amount): string
     {
-        if (!isset($this->courses[$fromCurrencyId])) {
+        $course = $this->courses->find(function (Course $course) use ($fromCurrencyId, $toCurrencyId): bool {
+            return $course->from_currency_id == $fromCurrencyId && $course->to_currency_id == $toCurrencyId;
+        });
+
+        if (empty($course)) {
+            //TODO: localize
             throw new Exception('Courses not found.');
         }
-
-        if (!isset($this->courses[$fromCurrencyId][$toCurrencyId])) {
-            throw new Exception('Courses not found.');
-        }
-
-        $course = $this->courses[$fromCurrencyId][$toCurrencyId];
 
         $amount = floatval($amount);
-        return number_format($amount * $course, $this->decimals, '.', '');
+        return number_format($amount * $course->coefficient, $this->decimals, ',', '');
     }
 }

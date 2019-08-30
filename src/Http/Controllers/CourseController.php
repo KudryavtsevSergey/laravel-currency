@@ -2,6 +2,7 @@
 
 namespace Sun\Currency\Http\Controllers;
 
+use Sun\Currency\CurrencyConfig;
 use Sun\Currency\Http\Requests\CourseRequest;
 use Sun\Currency\Models\Course;
 
@@ -19,7 +20,9 @@ class CourseController extends Controller
 
     public function index()
     {
-        $courses = $this->course->select('course.from_currency_id', 'course.to_currency_id', 'course.coefficient')
+        $tableCourse = CurrencyConfig::tableCourse();
+
+        $courses = $this->course->select("{$tableCourse}.from_currency_id", "{$tableCourse}.to_currency_id", "{$tableCourse}.coefficient")
             ->get();
 
         return response()->json($courses);
