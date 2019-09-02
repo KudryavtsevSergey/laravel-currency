@@ -43,7 +43,7 @@ class Currency
      */
     public function convert(int $fromCurrencyId, int $toCurrencyId, $amount): string
     {
-        $course = $this->courses->find(function (Course $course) use ($fromCurrencyId, $toCurrencyId): bool {
+        $course = $this->courses->first(function (Course $course) use ($fromCurrencyId, $toCurrencyId): bool {
             return $course->from_currency_id == $fromCurrencyId && $course->to_currency_id == $toCurrencyId;
         });
 
