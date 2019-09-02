@@ -53,6 +53,6 @@ class Currency
         }
 
         $amount = floatval($amount);
-        return number_format($amount * $course->coefficient, $this->decimals, ',', '');
+        return number_format($amount * $course->coefficient, $this->decimals, '.', '');
     }
 }
