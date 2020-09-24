@@ -6,11 +6,6 @@ use Illuminate\Support\ServiceProvider;
 
 class CurrencyServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap services.
-     *
-     * @return void
-     */
     public function boot()
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
@@ -22,15 +17,10 @@ class CurrencyServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/currency.php');
     }
 
-    /**
-     * Register services.
-     *
-     * @return void
-     */
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/currency.php', 'currency');
 
-        $this->app->singleton('Currency', Currency::class);
+        $this->app->singleton(Facade::FACADE, Currency::class);
     }
 }

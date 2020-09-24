@@ -8,10 +8,7 @@ use Sun\Currency\Models\Course;
 
 class CourseController extends Controller
 {
-    /**
-     * @var Course
-     */
-    protected $course;
+    protected Course $course;
 
     public function __construct(Course $course)
     {
@@ -36,7 +33,6 @@ class CourseController extends Controller
 
         $this->course->insert($courses);
 
-        //TODO: localize
-        return response()->json(['message' => 'Courses updated successfully!']);
+        return $this->index();
     }
 }

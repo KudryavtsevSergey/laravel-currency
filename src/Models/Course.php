@@ -6,13 +6,9 @@ use \Illuminate\Database\Eloquent\Model as Eloquent;
 use Sun\Currency\CurrencyConfig;
 
 /**
- * Class Course
- *
  * @property int $from_currency_id
  * @property int $to_currency_id
  * @property float $coefficient
- *
- * @package App\Models
  */
 class Course extends Eloquent
 {

@@ -2,14 +2,14 @@
 
 namespace Sun\Currency;
 
-use Illuminate\Contracts\Routing\Registrar as Router;
 use Illuminate\Support\Facades\Facade as IlluminateFacade;
-use Route;
 
 class Facade extends IlluminateFacade
 {
+    const FACADE = 'Currency';
+
     protected static function getFacadeAccessor()
     {
-        return 'Currency';
+        return self::FACADE;
     }
 }
