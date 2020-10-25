@@ -2,17 +2,18 @@
 
 namespace Sun\Currency;
 
-use Sun\Currency\Models\Course;
+use Sun\Currency\Contracts\CourseContract;
+use Sun\Currency\Contracts\CoursesContract;
 use Sun\Currency\Exceptions\CourseNotFoundException;
 
 class Currency
 {
-    private Course $course;
     private int $decimals = 2;
+    private CoursesContract $courses;
 
-    public function __construct(Course $course)
+    public function __construct(CoursesContract $courses)
     {
-        $this->course = $course;
+        $this->courses = $courses;
     }
 
     public function decimals(int $decimals): self
@@ -22,27 +23,25 @@ class Currency
     }
 
     /**
-     * @param int $fromCurrencyId
-     * @param int $toCurrencyId
-     * @param $amount
-     * @return string
+     * @param string $fromCurrency
+     * @param string $toCurrency
+     * @param float $amount
+     * @return float
      * @throws CourseNotFoundException
      */
-    public function convert(int $fromCurrencyId, int $toCurrencyId, $amount): string
+    public function convert(string $fromCurrency, string $toCurrency, float $amount): float
     {
-        $tableCourse = CurrencyConfig::tableCourse();
-        $courses = $this->course->select("{$tableCourse}.from_currency_id", "{$tableCourse}.to_currency_id", "{$tableCourse}.coefficient")
-            ->get();
+        $courses = $this->courses->getCourses();
+        $courses = collect($courses);
 
-        $course = $courses->first(function (Course $course) use ($fromCurrencyId, $toCurrencyId): bool {
-            return $course->from_currency_id == $fromCurrencyId && $course->to_currency_id == $toCurrencyId;
+        $course = $courses->first(function (CourseContract $course) use ($fromCurrency, $toCurrency): bool {
+            return $course->getFromCurrency() == $fromCurrency && $course->getToCurrency() == $toCurrency;
         });
 
         if (empty($course)) {
-            throw new CourseNotFoundException($fromCurrencyId, $toCurrencyId);
+            throw new CourseNotFoundException($fromCurrency, $toCurrency);
         }
 
-        $amount = floatval($amount);
-        return number_format($amount * $course->coefficient, $this->decimals, '.', '');
+        return number_format($amount * $course->getCoefficient(), $this->decimals, '.', '');
     }
 }

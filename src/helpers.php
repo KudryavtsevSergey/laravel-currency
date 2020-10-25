@@ -1,9 +1,21 @@
 <?php
-if (!function_exists('currencyConvert')) {
-    function currencyConvert(int $fromCurrencyId, int $toCurrencyId, $amount)
+
+use Sun\Currency\Exceptions\CourseNotFoundException;
+use Sun\Currency\Facade;
+
+if (!function_exists('convert')) {
+
+    /**
+     * @param string $fromCurrency
+     * @param string $toCurrency
+     * @param float $amount
+     * @return float
+     * @throws CourseNotFoundException
+     */
+    function convert(string $fromCurrency, string $toCurrency, float $amount): float
     {
         /** @var Currency $currency */
-        $currency = app('Currency');
-        return $currency->convert($fromCurrencyId, $toCurrencyId, $amount);
+        $currency = app(Facade::FACADE);
+        return $currency->convert($fromCurrency, $toCurrency, $amount);
     }
 }
