@@ -4,9 +4,15 @@ namespace Sun\Currency\Contracts;
 
 interface CourseContract
 {
-    public function getFromCurrency(): string;
+    /**
+     * @return string|int
+     */
+    public function getFromCurrency();
 
-    public function getToCurrency(): string;
+    /**
+     * @return string|int
+     */
+    public function getToCurrency();
 
     public function getCoefficient(): float;
 }

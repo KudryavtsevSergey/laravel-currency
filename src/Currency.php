@@ -23,13 +23,13 @@ class Currency
     }
 
     /**
-     * @param string $fromCurrency
-     * @param string $toCurrency
+     * @param string|int $fromCurrency
+     * @param string|int $toCurrency
      * @param float $amount
      * @return float
      * @throws CourseNotFoundException
      */
-    public function convert(string $fromCurrency, string $toCurrency, float $amount): float
+    public function convert($fromCurrency, $toCurrency, float $amount): float
     {
         $courses = $this->courses->getCourses();
         $courses = collect($courses);
