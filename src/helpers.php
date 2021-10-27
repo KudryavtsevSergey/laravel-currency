@@ -15,7 +15,7 @@ if (!function_exists('convert')) {
     function convert($fromCurrency, $toCurrency, float $amount): float
     {
         /** @var Currency $currency */
-        $currency = app(Facade::FACADE);
+        $currency = app(Facade::FACADE_ACCESSOR);
         return $currency->convert($fromCurrency, $toCurrency, $amount);
     }
 }

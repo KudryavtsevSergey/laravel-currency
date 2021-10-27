@@ -6,10 +6,10 @@ use Illuminate\Support\Facades\Facade as IlluminateFacade;
 
 class Facade extends IlluminateFacade
 {
-    const FACADE = 'Currency';
+    public const FACADE_ACCESSOR = 'Currency';
 
     protected static function getFacadeAccessor()
     {
-        return self::FACADE;
+        return self::FACADE_ACCESSOR;
     }
 }

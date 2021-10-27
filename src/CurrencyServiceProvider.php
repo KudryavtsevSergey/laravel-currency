@@ -17,6 +17,6 @@ class CurrencyServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/currency.php', 'currency');
 
-        $this->app->singleton(Facade::FACADE, Currency::class);
+        $this->app->singleton(Facade::FACADE_ACCESSOR, Currency::class);
     }
 }
