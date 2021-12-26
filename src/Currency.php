@@ -8,7 +8,6 @@ use Sun\Currency\Exceptions\CourseNotFoundException;
 
 class Currency
 {
-    private int $decimals = 2;
     private CoursesContract $courses;
 
     public function __construct(CoursesContract $courses)
@@ -16,32 +15,24 @@ class Currency
         $this->courses = $courses;
     }
 
-    public function decimals(int $decimals): self
-    {
-        $this->decimals = $decimals;
-        return $this;
-    }
-
     /**
      * @param string|int $fromCurrency
      * @param string|int $toCurrency
-     * @param float $amount
-     * @return float
+     * @return Converter
      * @throws CourseNotFoundException
      */
-    public function convert($fromCurrency, $toCurrency, float $amount): float
+    public function createConverter($fromCurrency, $toCurrency): Converter
     {
-        $courses = $this->courses->getCourses();
-        $courses = collect($courses);
+        $courses = collect($this->courses->getCourses());
+        /** @var CourseContract|null $course */
+        $course = $courses->first(fn(
+            CourseContract $course
+        ): bool => $course->getFromCurrency() === $fromCurrency && $course->getToCurrency() === $toCurrency);
 
-        $course = $courses->first(function (CourseContract $course) use ($fromCurrency, $toCurrency): bool {
-            return $course->getFromCurrency() == $fromCurrency && $course->getToCurrency() == $toCurrency;
-        });
-
-        if (empty($course)) {
+        if (is_null($course)) {
             throw new CourseNotFoundException($fromCurrency, $toCurrency);
         }
 
-        return number_format($amount * $course->getCoefficient(), $this->decimals, '.', '');
+        return new Converter($course);
     }
 }
