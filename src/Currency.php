@@ -2,17 +2,20 @@
 
 namespace Sun\Currency;
 
+use Illuminate\Support\Collection;
+use Illuminate\Support\ItemNotFoundException;
 use Sun\Currency\Contracts\CourseContract;
 use Sun\Currency\Contracts\CoursesContract;
 use Sun\Currency\Exceptions\CourseNotFoundException;
 
 class Currency
 {
-    private CoursesContract $courses;
+    private Collection $courses;
 
-    public function __construct(CoursesContract $courses)
-    {
-        $this->courses = $courses;
+    public function __construct(
+        CoursesContract $courses,
+    ) {
+        $this->courses = collect($courses->getCourses());
     }
 
     /**
@@ -21,18 +24,16 @@ class Currency
      * @return Converter
      * @throws CourseNotFoundException
      */
-    public function createConverter($fromCurrency, $toCurrency): Converter
+    public function createConverter(string|int $fromCurrency, string|int $toCurrency): Converter
     {
-        $courses = collect($this->courses->getCourses());
-        /** @var CourseContract|null $course */
-        $course = $courses->first(fn(
-            CourseContract $course
-        ): bool => $course->getFromCurrency() === $fromCurrency && $course->getToCurrency() === $toCurrency);
+        try {
+            $course = $this->courses->firstOrFail(static fn(
+                CourseContract $course
+            ): bool => $course->getFromCurrency() === $fromCurrency && $course->getToCurrency() === $toCurrency);
 
-        if (is_null($course)) {
-            throw new CourseNotFoundException($fromCurrency, $toCurrency);
+            return new Converter($course);
+        } catch (ItemNotFoundException $exception) {
+            throw new CourseNotFoundException($fromCurrency, $toCurrency, $exception);
         }
-
-        return new Converter($course);
     }
 }
