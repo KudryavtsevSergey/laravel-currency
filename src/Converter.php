@@ -11,8 +11,8 @@ class Converter
     ) {
     }
 
-    public function convert(float $amount): float
+    public function convert(int $amount): int
     {
-        return round($amount * $this->course->getCoefficient(), 2);
+        return round($amount * $this->course->getCoefficient());
     }
 }
