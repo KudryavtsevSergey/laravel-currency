@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sun\Currency\Service;
 
 use Illuminate\Support\ItemNotFoundException;
@@ -23,10 +25,8 @@ class CourseService
      */
     public function createConverter(string|int $fromCurrency, string|int $toCurrency): Converter
     {
-        $courses = collect($this->courses->getCourses());
-
         try {
-            $course = $courses->firstOrFail(static fn(
+            $course = $this->courses->getCourses()->firstOrFail(static fn(
                 CourseContract $course
             ): bool => $course->getFromCurrency() === $fromCurrency && $course->getToCurrency() === $toCurrency);
 

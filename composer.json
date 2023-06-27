@@ -9,7 +9,6 @@
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "require": {},
     "autoload": {
         "psr-4": {
             "Sun\\Currency\\": "src/"
@@ -24,5 +23,9 @@
                 "Currency": "Sun\\Currency\\Facade"
             }
         }
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.10",
+        "orchestra/testbench": "^8.5"
     }
 }
