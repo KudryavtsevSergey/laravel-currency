@@ -9,7 +9,7 @@ use Sun\Currency\Contracts\CourseContract;
 class Converter
 {
     public function __construct(
-        private CourseContract $course,
+        private readonly CourseContract $course,
     ) {
     }
 

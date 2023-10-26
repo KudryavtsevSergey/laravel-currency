@@ -13,7 +13,7 @@ use Sun\Currency\Exceptions\CourseNotFoundException;
 class CourseService
 {
     public function __construct(
-        private CoursesContract $courses,
+        private readonly CoursesContract $courses,
     ) {
     }
 
